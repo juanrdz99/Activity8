@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\Rules\Unique;
 
-return new class extends Migration
+class CreateTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,10 +16,13 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->string('city');
+            $table->unsignedBigInteger('city_id'); // Cambiado a unsignedBigInteger
             $table->unsignedTinyInteger('titles')->default(0);
             $table->string('logo')->nullable();
             $table->timestamps();
+
+            // Definir la restricción de clave externa
+            $table->foreign('city_id')->references('id')->on('cities');
         });
     }
 
@@ -33,4 +35,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('teams');
     }
-};
+}
